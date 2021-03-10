@@ -3,6 +3,7 @@
 # Variables
 RUBY_VERS=$(ruby -v | cut -c 5-10)
 DESIRED_RUBY_VERS="2.6"
+TERRAFORM_VERSION="0.13.6"
 
 # Make sure we're in the home dir
 cd $HOME
@@ -58,4 +59,12 @@ if [[ $RUBY_VERS != *"$DESIRED_RUBY_VERS"* ]]; then
   source /usr/local/share/chruby/chruby.sh
   chruby ruby-2.6.6
 fi
+
+# Install Terraform 0.13
+echo "Removing Terraform 0.12..."
+sudo rm -rf /usr/local/bin/terraform
+echo "Installing Terraform version $TERRAFORM_VERSION..."
+wget https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+unzip terraform_${TERRAFORM_VERSION}_linux_amd64.zip
+sudo mv terraform /usr/local/bin/
 

@@ -19,10 +19,15 @@ if ! [ -x "$(command -v ruby-install)" ]; then
 	cd $HOME
 	rm -rf ruby-install-0.8.1.tar.gz
 	rm -rf ruby-install-0.8.1/
+else
+  echo "ruby-install already installed. Checking chruby installation..."
 fi 
 
 # Install chruby
-if ! [ -x "$(command -v chruby)" ]; then
+if [ -f "/usr/local/share/chruby/chruby.sh" ]; then
+  echo "chruby already installed. Checking ruby version..." 
+  chruby ruby-2.6.6
+else
 	echo 'Installing: chruby ...'	
 	wget -O chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
 	tar -zxvf chruby-0.3.9.tar.gz
@@ -43,14 +48,12 @@ fi
 
 # Install Ruby 2.6
 if [[ $RUBY_VERS =~ $DESIRED_RUBY_VERS ]]; then
-  chruby ruby-2.6.6
   echo "Ruby 2.6 is installed.";
 fi 
 
 if [[ $RUBY_VERS != *"$DESIRED_RUBY_VERS"* ]]; then
   echo "Ruby 2.6 is not installed.";
   ruby-install 2.6.6
-  source /usr/local/share/chruby/chruby.sh
   chruby ruby-2.6.6
 fi
 

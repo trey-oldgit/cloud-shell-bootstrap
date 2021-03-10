@@ -1,5 +1,9 @@
 #!/bin/bash
 
+# Variables
+RUBY_VERS=$(ruby -v | cut -c 5-10)
+DESIRED_RUBY_VERS="2.6"
+
 # Make sure we're in the home dir
 cd $HOME
 
@@ -17,6 +21,7 @@ if ! [ -x "$(command -v ruby-install)" ]; then
 	rm -rf ruby-install-0.8.1/
 fi 
 
+# Install chruby
 if ! [ -x "$(command -v chruby)" ]; then
 	echo 'Installing: chruby ...'	
 	wget -O chruby-0.3.9.tar.gz https://github.com/postmodern/chruby/archive/v0.3.9.tar.gz
@@ -32,5 +37,20 @@ if ! [ -x "$(command -v chruby)" ]; then
 
 	# Add config to .bashrc
 	echo 'source /usr/local/share/chruby/chruby.sh' >> ~/.bashrc
-	source ~/.bashrc
+  source /usr/local/share/chruby/chruby.sh
+  source ~/.bashrc
 fi 
+
+# Install Ruby 2.6
+if [[ $RUBY_VERS =~ $DESIRED_RUBY_VERS ]]; then
+  chruby ruby-2.6.6
+  echo "Ruby 2.6 is installed.";
+fi 
+
+if [[ $RUBY_VERS != *"$DESIRED_RUBY_VERS"* ]]; then
+  echo "Ruby 2.6 is not installed.";
+  ruby-install 2.6.6
+  source /usr/local/share/chruby/chruby.sh
+  chruby ruby-2.6.6
+fi
+

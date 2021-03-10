@@ -26,6 +26,7 @@ fi
 # Install chruby
 if [ -f "/usr/local/share/chruby/chruby.sh" ]; then
   echo "chruby already installed. Checking ruby version..." 
+  source /usr/local/share/chruby/chruby.sh
   chruby ruby-2.6.6
 else
 	echo 'Installing: chruby ...'	
@@ -54,6 +55,7 @@ fi
 if [[ $RUBY_VERS != *"$DESIRED_RUBY_VERS"* ]]; then
   echo "Ruby 2.6 is not installed.";
   ruby-install 2.6.6
+  source /usr/local/share/chruby/chruby.sh
   chruby ruby-2.6.6
 fi
 
